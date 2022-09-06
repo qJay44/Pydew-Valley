@@ -19,6 +19,12 @@ class Game:
                     pygame.quit()
                     sys.exit()
 
+                # temporarily
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_q:
+                        pygame.quit()
+                        sys.exit()
+
             delta = self.clock.tick() / 1000
             self.level.run(delta)
             pygame.display.update()
