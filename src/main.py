@@ -21,7 +21,7 @@ class Game:
 
                 # temporarily
                 if event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_q:
+                    if event.key == pygame.K_F6:
                         pygame.quit()
                         sys.exit()
 
