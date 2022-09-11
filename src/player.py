@@ -20,7 +20,7 @@ class Player(pg.sprite.Sprite):
         # movement attributes
         self.direction = pg.math.Vector2()
         self.pos = pg.math.Vector2(self.rect.center)
-        self.speed = 200
+        self.speed = 500
 
         # timers
         self.timers = {
@@ -69,6 +69,7 @@ class Player(pg.sprite.Sprite):
         keys = pg.key.get_pressed()
 
         if not self.timers['tool_use'].active:
+
             # directions
             if keys[pg.K_UP]:
                 self.direction.y = -1

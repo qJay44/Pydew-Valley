@@ -1,7 +1,10 @@
 import pygame
 import sys
+import os
 from settings import *
 from level import Level
+
+os.chdir(os.path.dirname(os.path.realpath(__file__)))
 
 
 class Game:
