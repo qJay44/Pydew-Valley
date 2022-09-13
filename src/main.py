@@ -4,8 +4,6 @@ import os
 from settings import *
 from level import Level
 
-os.chdir(os.path.dirname(os.path.realpath(__file__)))
-
 
 class Game:
     def __init__(self) -> None:
@@ -34,6 +32,7 @@ class Game:
 
 
 if __name__ == '__main__':
+    os.chdir(os.path.dirname(os.path.realpath(__file__)))
     game = Game()
     game.run()
 

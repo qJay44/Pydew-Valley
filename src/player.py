@@ -5,8 +5,11 @@ from timer import Timer
 
 
 class Player(pg.sprite.Sprite):
-    def __init__(self, pos, group, collision_sprites) -> None:
+    def __init__(self, pos, group, collision_sprites, tree_sprites) -> None:
         super().__init__(group)
+
+        # debug
+        self.drawHitbox = False
 
         self.import_assets()
         self.status = 'down_idle'
@@ -44,8 +47,23 @@ class Player(pg.sprite.Sprite):
         self.seed_index = 0
         self.selected_seed = self.seeds[self.seed_index]
 
+        # interaction
+        self.tree_sprites = tree_sprites
+
     def use_tool(self):
-        pass
+        if self.selected_tool == 'hoe':
+            pass
+
+        if self.selected_tool == 'axe':
+            for tree in self.tree_sprites.sprites():
+                if tree.rect.collidepoint(self.target_pos):
+                    tree.damage()
+
+        if self.selected_tool == 'water':
+            pass
+
+    def get_target_pos(self):
+        self.target_pos = self.rect.center + PLAYER_TOOL_OFFSET[self.status.split('_')[0]]
 
     def use_seed(self):
         pass
@@ -117,6 +135,9 @@ class Player(pg.sprite.Sprite):
                 self.seed_index = self.seed_index + 1 if self.seed_index != len(self.seeds) - 1 else 0
                 self.selected_seed = self.seeds[self.seed_index]
 
+            if keys[pg.K_F5]:
+                self.drawHitbox = not self.drawHitbox
+
     def get_status(self):
         # idle
         if self.direction.magnitude() == 0:
@@ -181,6 +202,7 @@ class Player(pg.sprite.Sprite):
         self.input()
         self.get_status()
         self.update_timers()
+        self.get_target_pos()
 
         self.move(dt)
         self.animate(dt)
