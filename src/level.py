@@ -46,7 +46,7 @@ class Level:
 
         # Trees
         for obj in tmx_data.get_layer_by_name('Trees'):
-            Tree((obj.x, obj.y), obj.image, [self.all_sprites, self.collision_sprites, self.tree_sprites], obj.name)
+            Tree((obj.x, obj.y), obj.image, [self.all_sprites, self.collision_sprites, self.tree_sprites], obj.name, self.player_add)
 
         # Collision tiles
         for x, y, surf in tmx_data.get_layer_by_name('Collision').tiles():
@@ -68,6 +68,9 @@ class Level:
             groups=self.all_sprites,
             z=LAYERS['ground']
         )
+
+    def player_add(self, item):
+        self.player.item_inventory[item] += 1
 
     def run(self, dt):
         self.display_surface.fill('black')
@@ -97,10 +100,10 @@ class CameraGroup(pg.sprite.Group):
                     # analytics
                     if player.drawHitbox and sprite == player:
                         pg.draw.rect(self.display_surface, 'red', offset_rect, 5)
-                        hitbox_rect = player.hitbox_rect.copy()
+                        hitbox_rect = player.hitbox.copy()
                         hitbox_rect.center = offset_rect.center
                         pg.draw.rect(self.display_surface, 'green', hitbox_rect, 5)
                         target_pos = offset_rect.center + PLAYER_TOOL_OFFSET[player.status.split('_')[0]]
-                        pg.draw.rect(self.display_surface, 'blue', target_pos, 5)
+                        pg.draw.circle(self.display_surface, 'blue', target_pos, 5)
 
 

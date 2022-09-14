@@ -34,7 +34,8 @@ class Player(pg.sprite.Sprite):
             'tool_use': Timer(350, self.use_tool),
             'tool_switch': Timer(200),
             'seed_use': Timer(350, self.use_seed),
-            'seed_switch': Timer(200)
+            'seed_switch': Timer(200),
+            'show_hitbox': Timer(400)
         }
 
         # tools
@@ -46,6 +47,14 @@ class Player(pg.sprite.Sprite):
         self.seeds = ['corn', 'tomato']
         self.seed_index = 0
         self.selected_seed = self.seeds[self.seed_index]
+
+        # inventory
+        self.item_inventory = {
+            'wood'  : 0,
+            'apple' : 0,
+            'corn'  : 0,
+            'tomato': 0
+        }
 
         # interaction
         self.tree_sprites = tree_sprites
@@ -135,7 +144,9 @@ class Player(pg.sprite.Sprite):
                 self.seed_index = self.seed_index + 1 if self.seed_index != len(self.seeds) - 1 else 0
                 self.selected_seed = self.seeds[self.seed_index]
 
-            if keys[pg.K_F5]:
+            # show hitboxes
+            if keys[pg.K_F5] and not self.timers['show_hitbox'].active:
+                self.timers['show_hitbox'].activate()
                 self.drawHitbox = not self.drawHitbox
 
     def get_status(self):
