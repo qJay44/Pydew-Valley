@@ -13,6 +13,13 @@ class Generic(pg.sprite.Sprite):
         self.hitbox = self.rect.copy().inflate((-self.rect.width * 0.2, -self.rect.height * 0.75))
 
 
+class Interaction(Generic):
+    def __init__(self, pos, size, groups, name):
+        surf = pg.Surface(size)
+        super().__init__(pos, surf, groups)
+        self.name = name
+
+
 class Water(Generic):
     def __init__(self, pos, frames, groups):
 
@@ -96,7 +103,6 @@ class Tree(Generic):
             self.hitbox = self.rect.copy().inflate(-10, -self.rect.height * 0.6)
             self.alive = False
             self.player_add('wood')
-
 
     def update(self, dt):
         if self.alive:

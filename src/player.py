@@ -5,7 +5,7 @@ from timer import Timer
 
 
 class Player(pg.sprite.Sprite):
-    def __init__(self, pos, group, collision_sprites, tree_sprites) -> None:
+    def __init__(self, pos, group, collision_sprites, tree_sprites, interaction) -> None:
         super().__init__(group)
 
         # debug
@@ -58,6 +58,8 @@ class Player(pg.sprite.Sprite):
 
         # interaction
         self.tree_sprites = tree_sprites
+        self.interaction = interaction
+        self.sleep = False
 
     def use_tool(self):
         if self.selected_tool == 'hoe':
@@ -99,7 +101,7 @@ class Player(pg.sprite.Sprite):
     def input(self):
         keys = pg.key.get_pressed()
 
-        if not self.timers['tool_use'].active:
+        if not self.timers['tool_use'].active and not self.sleep:
 
             # directions
             if keys[pg.K_UP]:
@@ -143,6 +145,15 @@ class Player(pg.sprite.Sprite):
                 self.timers['seed_switch'].activate()
                 self.seed_index = self.seed_index + 1 if self.seed_index != len(self.seeds) - 1 else 0
                 self.selected_seed = self.seeds[self.seed_index]
+
+            if keys[pg.K_RETURN]:
+                collided_interaction_sprite = pg.sprite.spritecollide(self, self.interaction, False)
+                if collided_interaction_sprite:
+                    if collided_interaction_sprite[0].name == 'Trader':
+                        pass
+                    else:
+                        self.status = 'left_idle'
+                        self.sleep = True
 
             # show hitboxes
             if keys[pg.K_F5] and not self.timers['show_hitbox'].active:
