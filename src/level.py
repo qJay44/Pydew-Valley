@@ -124,4 +124,3 @@ class CameraGroup(pg.sprite.Group):
                         target_pos = offset_rect.center + PLAYER_TOOL_OFFSET[player.status.split('_')[0]]
                         pg.draw.circle(self.display_surface, 'blue', target_pos, 5)
 
-

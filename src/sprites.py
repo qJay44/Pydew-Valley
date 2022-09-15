@@ -115,4 +115,3 @@ class Tree(Generic):
                 y = pos[1] + self.rect.top
                 Generic((x, y), self.apple_surf, [self.apple_sprites, self.groups()[0]], LAYERS['fruit'])
 
-
