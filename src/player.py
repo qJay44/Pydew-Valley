@@ -5,7 +5,7 @@ from timer import Timer
 
 
 class Player(pg.sprite.Sprite):
-    def __init__(self, pos, group, collision_sprites, tree_sprites, interaction) -> None:
+    def __init__(self, pos, group, collision_sprites, tree_sprites, interaction, soil_layer) -> None:
         super().__init__(group)
 
         # debug
@@ -60,10 +60,11 @@ class Player(pg.sprite.Sprite):
         self.tree_sprites = tree_sprites
         self.interaction = interaction
         self.sleep = False
+        self.soil_layer = soil_layer
 
     def use_tool(self):
         if self.selected_tool == 'hoe':
-            pass
+            self.soil_layer.get_hit(self.target_pos)
 
         if self.selected_tool == 'axe':
             for tree in self.tree_sprites.sprites():
