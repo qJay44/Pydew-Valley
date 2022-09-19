@@ -21,7 +21,7 @@ def import_folder_dict(path):
         for image in img_files:
             full_path = path + '/' + image
             image_surf = pg_load_img(full_path).convert_alpha()
-            surface_dict[image.split('.png')[0]] = image_surf
+            surface_dict[image.split('.')[0]] = image_surf
 
     return surface_dict
 
