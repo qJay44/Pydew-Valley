@@ -83,7 +83,7 @@ class SoilLayer:
         self.hoe_sound.set_volume(0.1)
 
         self.plant_sound = pg.mixer.Sound('../audio/plant.wav')
-        self.plant_seed.set_volume(0.2)
+        self.plant_sound.set_volume(0.2)
 
     def create_soil_grid(self):
         ground = pg.image.load('../graphics/world/ground.png')
