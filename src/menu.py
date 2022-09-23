@@ -29,7 +29,7 @@ class Menu:
         self.timer = Timer(200)
 
     def display_money(self):
-        text_surf = self.font.render(f'{self.player.money}', False, 'Black')
+        text_surf = self.font.render(f'${self.player.money}', False, 'Black')
         text_rect = text_surf.get_rect(midbottom=(SCREEN_WIDTH / 2, SCREEN_HEIGHT - 20))
 
         pg.draw.rect(self.display_surface, 'White', text_rect.inflate(10, 10), 0, 6)
@@ -49,6 +49,10 @@ class Menu:
         menu_left = SCREEN_WIDTH / 2 - self.width / 2
         self.main_rect = pg.Rect(menu_left, menu_top, self.width, total_height)
 
+        # buy / sell text surface
+        self.buy_text = self.font.render('buy', False, 'Black')
+        self.sell_text = self.font.render('sell', False, 'Black')
+
     def input(self):
         keys = pg.key.get_pressed()
         self.timer.update()
@@ -64,6 +68,24 @@ class Menu:
             if keys[pg.K_DOWN]:
                 self.index += 1
                 self.timer.activate()
+
+            if keys[pg.K_SPACE]:
+                self.timer.activate()
+
+                # get item
+                current_item = self.options[self.index]
+
+                # sell
+                if self.index <= self.sell_border:
+                    if self.player.item_inventory[current_item] > 0:
+                        self.player.item_inventory[current_item] -= 1
+                        self.player.money += SALE_PRICES[current_item]
+                # buy
+                else:
+                    seed_price = PURCHASE_PRICES[current_item]
+                    if self.player.money >= seed_price:
+                        self.player.seed_inventory[current_item] += 1
+                        self.player.money -= seed_price
 
         # clamp the values
         if self.index < 0:
@@ -90,6 +112,16 @@ class Menu:
         if selected:
             pg.draw.rect(self.display_surface, 'Black', bg_rect, 4, 4)
 
+            # sell
+            if self.index <= self.sell_border:
+                pos_rect = self.sell_text.get_rect(midleft=(self.main_rect.left + 150, bg_rect.centery))
+                self.display_surface.blit(self.sell_text, pos_rect)
+            # buy
+            else:
+                pos_rect = self.buy_text.get_rect(midleft=(self.main_rect.left + 150, bg_rect.centery))
+                self.display_surface.blit(self.buy_text, pos_rect)
+
+
     def update(self):
         self.input()
         self.display_money()
@@ -98,3 +130,4 @@ class Menu:
             amount_list = list(self.player.item_inventory.values()) + list(self.player.seed_inventory.values())
             amount = amount_list[text_index]
             self.show_entry(text_surf, amount, top, self.index == text_index)
+

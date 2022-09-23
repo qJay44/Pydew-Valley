@@ -50,10 +50,10 @@ class Player(pg.sprite.Sprite):
 
         # inventory
         self.item_inventory = {
-            'wood'  : 0,
-            'apple' : 0,
-            'corn'  : 0,
-            'tomato': 0
+            'wood'  : 20,
+            'apple' : 20,
+            'corn'  : 20,
+            'tomato': 20
         }
         self.seed_inventory = {
             'corn': 5,
@@ -68,6 +68,10 @@ class Player(pg.sprite.Sprite):
         self.soil_layer = soil_layer
         self.toggle_shop = toggle_shop
 
+        # sound
+        self.watering = pg.mixer.Sound('../audio/water.mp3')
+        self.watering.set_volume(0.2)
+
     def use_tool(self):
         if self.selected_tool == 'hoe':
             self.soil_layer.get_hit(self.target_pos)
@@ -79,6 +83,7 @@ class Player(pg.sprite.Sprite):
 
         if self.selected_tool == 'water':
             self.soil_layer.water(self.target_pos)
+            self.watering.play()
 
     def get_target_pos(self):
         self.target_pos = self.rect.center + PLAYER_TOOL_OFFSET[self.status.split('_')[0]]

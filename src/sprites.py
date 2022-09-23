@@ -1,7 +1,6 @@
 import pygame as pg
 from settings import *
 from random import randint, choice
-from timer import Timer
 
 
 class Generic(pg.sprite.Sprite):
@@ -58,7 +57,7 @@ class Particle(Generic):
         new_surf.set_colorkey((0, 0, 0))
         self.image = new_surf
 
-    def update(self, dt):
+    def update(self, _):
         current_time = pg.time.get_ticks()
         if current_time - self.start_time > self.duration:
             self.kill()
@@ -73,7 +72,6 @@ class Tree(Generic):
         self.alive = True
         stump_path = f'../graphics/stumps/{"small" if name == "Small" else "large"}.png'
         self.stump_surf = pg.image.load(stump_path).convert_alpha()
-        self.invul_timer = Timer(200)
 
         # apples
         self.apple_surf = pg.image.load('../graphics/fruit/apple.png')
@@ -83,10 +81,16 @@ class Tree(Generic):
 
         self.player_add = player_add
 
+        # sounds
+        self.axe_sound = pg.mixer.Sound('../audio/axe.mp3')
+
     def damage(self):
 
         # damaging the tree
         self.health -= 1
+
+        # play sound
+        self.axe_sound.play()
 
         # remove an apple
         if len(self.apple_sprites.sprites()) > 0:
@@ -104,7 +108,7 @@ class Tree(Generic):
             self.alive = False
             self.player_add('wood')
 
-    def update(self, dt):
+    def update(self, _):
         if self.alive:
             self.check_death()
 
